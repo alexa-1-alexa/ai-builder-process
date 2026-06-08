@@ -1,3 +1,4 @@
+Link here: https://ai-builder-process.vercel.app
 # The 3-Phase Builder Process
 
 An interactive, click-through explainer of the 3-Phase Builder Process: the Plan to Build to Learn loop with its seven nested steps. Built as a single self-contained HTML file. No build step, no dependencies, light and dark mode included.

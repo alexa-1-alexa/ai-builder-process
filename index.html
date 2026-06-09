@@ -14,11 +14,14 @@
   font-weight:400; font-style:normal; font-display:swap;
 }
 :root{
-  --bg:#FFFFFF; --surface:#FFFFFF; --ink:#2A1F33;
-  --plan-fill:#FCE4F0; --plan-text:#9D1D5E; --plan-sub:#C43B82; --plan-stroke:#F4A6CC; --plan-chip:#F9C9E1;
-  --build-fill:#EEE7FB; --build-text:#5B2C9E; --build-sub:#7C4BC4; --build-stroke:#B89CE8; --build-chip:#DCCBF5;
-  --learn-fill:#FDEADF; --learn-text:#B5481B; --learn-sub:#E07038; --learn-stroke:#F4B48C; --learn-chip:#FAD4BC;
-  --violet:#4A2384;
+  --bg:#000000; --surface:#0C0C0E; --ink:#FFFFFF;
+  /* Plan = pink */
+  --plan-fill:#1C0E16; --plan-text:#FF6FB3; --plan-sub:#FF8FC4; --plan-stroke:#FF4FA3; --plan-chip:#3A1326;
+  /* Build = blue (reference cyan-blue) */
+  --build-fill:#06151E; --build-text:#36C0F4; --build-sub:#7FD8F8; --build-stroke:#22B4F0; --build-chip:#0B2C3C;
+  /* Learn = purple */
+  --learn-fill:#140C22; --learn-text:#B98CFF; --learn-sub:#CBAAFF; --learn-stroke:#9A6CF5; --learn-chip:#241640;
+  --violet:#C9A8FF;
 }
 *{ box-sizing:border-box; }
 body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Quicksand',system-ui,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
@@ -34,7 +37,7 @@ body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Quicksand',
 .sp-node:hover{ opacity:.9; }
 .sp-svg text{ font-family:'Quicksand',sans-serif; }
 .sp-svg .sp-cap{ font-family:'Poppins',sans-serif; }
-.sp-detail{ margin-top:16px; border-radius:20px; border:1.5px solid; padding:22px 24px; min-height:96px; }
+.sp-detail{ margin-top:16px; border-radius:20px; border:1.5px solid; padding:22px 24px; min-height:96px; background:var(--surface); }
 .sp-dhead{ display:flex; align-items:center; gap:11px; margin-bottom:10px; flex-wrap:wrap; }
 .sp-dtag{ font-size:11px; font-weight:600; padding:4px 12px; border-radius:999px; font-family:'Poppins',sans-serif; letter-spacing:.05em; text-transform:uppercase; }
 .sp-dtitle{ font-size:27px; font-weight:700; font-family:'Poppins',sans-serif; text-transform:uppercase; letter-spacing:.03em; }
@@ -43,8 +46,8 @@ body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Quicksand',
 .sp-steprow{ display:flex; gap:12px; align-items:baseline; }
 .sp-stepn{ flex:0 0 auto; width:23px; height:23px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:#fff; font-family:'Poppins',sans-serif; }
 .sp-steptxt{ font-size:14.5px; line-height:1.5; font-weight:500; }
-.sp-hint{ font-size:12.5px; color:#B79BBF; text-align:center; margin-top:14px; font-weight:500; }
-footer{ text-align:center; margin-top:44px; font-size:12px; color:#C3A9CC; font-family:'Poppins',sans-serif; }
+.sp-hint{ font-size:12.5px; color:#8A8A92; text-align:center; margin-top:14px; font-weight:500; }
+footer{ text-align:center; margin-top:44px; font-size:12px; color:#6E6E76; font-family:'Poppins',sans-serif; }
 @media (max-width:560px){ .sp-dtitle{ font-size:22px; } .sp-title{ font-size:30px; } .sp-intro{ font-size:16px; } .sp-leg{ font-size:14px; padding:7px 14px; } }
 </style>
 </head>
@@ -56,10 +59,10 @@ footer{ text-align:center; margin-top:44px; font-size:12px; color:#C3A9CC; font-
   <div class="sp-legend" id="sp-legend"></div>
 
   <div class="sp-stage">
-    <svg class="sp-svg" viewBox="0 0 640 360" id="sp-svg" xmlns="http://www.w3.org/2000/svg">
+    <svg class="sp-svg" viewBox="0 84 1000 282" id="sp-svg" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <marker id="sp-head" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M2 2L9 6L2 10" fill="none" stroke="context-stroke" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <marker id="sp-head" viewBox="0 0 12 12" refX="6.5" refY="6" markerWidth="5.5" markerHeight="5.5" orient="auto">
+          <path d="M2 2L9 6L2 10" fill="none" stroke="context-stroke" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
         </marker>
       </defs>
       <g id="sp-ribbon"></g>
@@ -88,7 +91,7 @@ footer{ text-align:center; margin-top:44px; font-size:12px; color:#C3A9CC; font-
   };
   const css=(k,s)=>getComputedStyle(document.documentElement).getPropertyValue('--'+k+'-'+s).trim();
   const steps={
-    "Prompt Framework":{phase:"plan",num:1,body:"The foundation of every request. Give the AI a clear Goal (what you want it to produce), the Context it needs (the info, files, and background), and the Rules for quality (process, don'ts, good examples)."},
+    "Prompt Framework":{phase:"plan",num:1,body:"The foundation of every request. Give the AI a clear <strong>Goal</strong> (what you want it to produce), the <strong>Context</strong> it needs (the info, files, and background), and the <strong>Rules</strong> for quality (process, don'ts, good examples)."},
     "Scope & Specify":{phase:"plan",num:2,body:"Narrow the work to one bounded deliverable. Decide what's included, what's excluded, and what \"done\" looks like before anything starts."},
     "Create":{phase:"build",num:3,body:"Let the AI take a full first draft, so you have something real to react to."},
     "Review":{phase:"build",num:4,body:"Check it against your goal and rules. Find the gaps, errors, and anything off-tone."},
@@ -99,79 +102,100 @@ footer{ text-align:center; margin-top:44px; font-size:12px; color:#C3A9CC; font-
 
   const order=["Prompt Framework","Scope & Specify","Create","Review","Feedback","Skillify","Log"];
   const ns="http://www.w3.org/2000/svg";
-  const yMid=185, amp=58, xL=70, xR=560;
+  // ---- Layout (reference style): 7 boxes in a row, phase headers above, dual arc loop over Build.
   const N=7;
-  const xs=[], ys=[];
-  for(let i=0;i<N;i++){ const t=i/(N-1); xs.push(xL+t*(xR-xL)); ys.push(yMid-Math.sin(t*Math.PI*2)*amp); }
-  const sampleY=x=>{ const t=(x-xL)/(xR-xL); return yMid-Math.sin(t*Math.PI*2)*amp; };
+  const VW=1000, VH=460;
+  const boxW=116, boxH=128, gap=14;
+  const rowY=232;                        // vertical centre of the box row
+  const totalW=N*boxW+(N-1)*gap;
+  const x0=(VW-totalW)/2;                 // left edge of first box
+  const cxArr=[];                         // box centre x
+  for(let i=0;i<N;i++){ cxArr.push(x0+i*(boxW+gap)+boxW/2); }
+  const boxTop=rowY-boxH/2, boxBot=rowY+boxH/2;
+  const phaseGroups={plan:[0,1], build:[2,3,4], learn:[5,6]};
   let active=null;
 
-  function ribbonPath(){
-    let d="M "+xL+" "+sampleY(xL);
-    for(let x=xL+4;x<=xR;x+=4){ d+=" L "+x.toFixed(1)+" "+sampleY(x).toFixed(1); }
-    return d;
-  }
+  function mk(tag,attrs){ const e=document.createElementNS(ns,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
 
   function render(){
     const rb=document.getElementById("sp-ribbon");
     const nd=document.getElementById("sp-nodes");
     rb.innerHTML=""; nd.innerHTML="";
 
-    const base=document.createElementNS(ns,"path");
-    base.setAttribute("d",ribbonPath());
-    base.setAttribute("fill","none"); base.setAttribute("stroke","#EBD9E6");
-    base.setAttribute("stroke-width","26"); base.setAttribute("stroke-linecap","round");
-    base.setAttribute("opacity",".5"); rb.appendChild(base);
-
-    [["plan",0,1],["build",2,4],["learn",5,6]].forEach(([key,i0,i1])=>{
-      const stroke=css(key,'stroke');
-      const xa=xs[i0]-22, xb=xs[i1]+22;
-      let d="M "+xa+" "+sampleY(xa);
-      for(let x=xa+4;x<=xb;x+=4){ d+=" L "+x.toFixed(1)+" "+sampleY(x).toFixed(1); }
-      const seg=document.createElementNS(ns,"path");
-      seg.setAttribute("d",d); seg.setAttribute("fill","none");
-      seg.setAttribute("stroke",stroke); seg.setAttribute("stroke-width",active===key?22:18);
-      seg.setAttribute("stroke-linecap","round"); seg.style.cursor="pointer";
-      seg.addEventListener("click",()=>showPhase(key)); rb.appendChild(seg);
+    // ---- Phase headers + underline rules
+    Object.keys(phaseGroups).forEach(key=>{
+      const g=phaseGroups[key];
+      const lft=cxArr[g[0]]-boxW/2, rgt=cxArr[g[g.length-1]]+boxW/2;
+      const mid=(lft+rgt)/2, hy=boxTop-72;
+      const head=mk("text",{x:mid,y:hy,"text-anchor":"middle","font-size":"19","font-weight":"700",
+        "letter-spacing":"6","fill":css(key,'text'),"class":"sp-cap"});
+      head.textContent=data[key].title.toUpperCase();
+      head.style.cursor="pointer"; head.addEventListener("click",()=>showPhase(key)); rb.appendChild(head);
+      rb.appendChild(mk("line",{x1:lft,y1:hy+18,x2:rgt,y2:hy+18,stroke:css(key,'text'),
+        "stroke-width":"1.5","opacity":(active===key?".9":".45")}));
     });
 
-    const ex=xs[6]+22, ey=sampleY(ex);
-    const loop=document.createElementNS(ns,"path");
-    loop.setAttribute("d","M "+ex+" "+ey+" C "+(ex+70)+" "+ey+", "+(ex+78)+" "+(ey-120)+", "+(ex-20)+" "+(ey-150)+" C "+(ex-150)+" "+(ey-188)+", 300 28, 250 26");
-    loop.setAttribute("fill","none"); loop.setAttribute("stroke",css('learn','sub'));
-    loop.setAttribute("stroke-width","2.5"); loop.setAttribute("stroke-dasharray","6 7");
-    loop.setAttribute("opacity",".6"); loop.setAttribute("stroke-linecap","round");
-    loop.setAttribute("marker-end","url(#sp-head)"); loop.style.color=css('learn','sub'); rb.appendChild(loop);
-    const lt=document.createElementNS(ns,"text");
-    lt.setAttribute("x",448); lt.setAttribute("y",16); lt.setAttribute("text-anchor","middle");
-    lt.setAttribute("font-size","11.5"); lt.setAttribute("font-weight","600"); lt.setAttribute("fill",css('learn','text'));
-    lt.textContent="\u21BB  feeds the next build"; rb.appendChild(lt);
+    // ---- Dual arc loop over BUILD (two separate arrows like the reference)
+    const cCreate=cxArr[2], cFeed=cxArr[4];
+    const bow=48;                                   // how far the arcs swing out
+    const archTop=boxTop-bow, archBot=boxBot+bow;
+    const bcol=css('build','stroke');
+    // anchor the arcs slightly inside the Create/Feedback top & bottom edges
+    const sIn=10;                                    // horizontal inset from box centre toward inner edge
+    // TOP arc: Create -> Feedback (left to right, bowing up), arrowhead at Feedback
+    const topPath=mk("path",{d:"M "+(cCreate)+" "+boxTop+
+        " C "+(cCreate)+" "+archTop+", "+(cFeed)+" "+archTop+", "+(cFeed)+" "+boxTop,
+        fill:"none",stroke:bcol,"stroke-width":"3.4","stroke-linecap":"round",
+        "marker-end":"url(#sp-head)"});
+    topPath.style.color=bcol; rb.appendChild(topPath);
+    // BOTTOM arc: Feedback -> Create (right to left, bowing down), arrowhead at Create
+    const botPath=mk("path",{d:"M "+(cFeed)+" "+boxBot+
+        " C "+(cFeed)+" "+archBot+", "+(cCreate)+" "+archBot+", "+(cCreate)+" "+boxBot,
+        fill:"none",stroke:bcol,"stroke-width":"3.4","stroke-linecap":"round",
+        "marker-end":"url(#sp-head)"});
+    botPath.style.color=bcol; rb.appendChild(botPath);
+    // dots at the apex of each arc (cubic apex = 0.75*control offset from baseline)
+    const midX=(cCreate+cFeed)/2;
+    const topApex=boxTop + 0.75*(archTop-boxTop);
+    const botApex=boxBot + 0.75*(archBot-boxBot);
+    rb.appendChild(mk("circle",{cx:midX,cy:topApex,r:"6.5",fill:bcol}));
+    rb.appendChild(mk("circle",{cx:midX,cy:botApex,r:"6.5",fill:bcol}));
 
+    // ---- Step boxes
     order.forEach((name,i)=>{
       const s=steps[name], pk=s.phase;
-      const cx=xs[i], cy=ys[i]; const above=(cy<yMid);
-      const g=document.createElementNS(ns,"g"); g.setAttribute("class","sp-node");
+      const bx=cxArr[i]-boxW/2;
+      const on=(active===pk);
+      const g=mk("g",{class:"sp-node"}); g.style.cursor="pointer";
       g.addEventListener("click",()=>showStep(name));
-      const ring=document.createElementNS(ns,"circle");
-      ring.setAttribute("cx",cx); ring.setAttribute("cy",cy); ring.setAttribute("r",active===pk?23:21);
-      ring.setAttribute("fill","#FFFFFF"); ring.setAttribute("stroke",css(pk,'stroke')); ring.setAttribute("stroke-width","4");
-      g.appendChild(ring);
-      const numt=document.createElementNS(ns,"text");
-      numt.setAttribute("x",cx); numt.setAttribute("y",cy); numt.setAttribute("text-anchor","middle");
-      numt.setAttribute("dominant-baseline","central"); numt.setAttribute("class","sp-cap");
-      numt.setAttribute("font-size","17"); numt.setAttribute("font-weight","700"); numt.setAttribute("fill",css(pk,'text'));
-      numt.textContent=s.num; g.appendChild(numt);
-      const ly=above? cy-34 : cy+34;
-      const conn=document.createElementNS(ns,"line");
-      conn.setAttribute("x1",cx); conn.setAttribute("y1",above?cy-23:cy+23);
-      conn.setAttribute("x2",cx); conn.setAttribute("y2",above?ly+6:ly-6);
-      conn.setAttribute("stroke",css(pk,'stroke')); conn.setAttribute("stroke-width","1.2"); conn.setAttribute("opacity",".5");
-      g.appendChild(conn);
-      const lbl=document.createElementNS(ns,"text");
-      lbl.setAttribute("x",cx); lbl.setAttribute("y",ly); lbl.setAttribute("text-anchor","middle");
-      lbl.setAttribute("dominant-baseline","central"); lbl.setAttribute("font-size","12");
-      lbl.setAttribute("font-weight","600"); lbl.setAttribute("fill",css(pk,'text')); lbl.textContent=name;
-      g.appendChild(lbl); nd.appendChild(g);
+      g.appendChild(mk("rect",{x:bx,y:boxTop,width:boxW,height:boxH,rx:"16",
+        fill:css(pk,'fill'),stroke:css(pk,'stroke'),"stroke-width":on?"2.6":"1.6",
+        opacity:on?"1":".96"}));
+      // number (e.g. 03)
+      const numt=mk("text",{x:cxArr[i],y:boxTop+40,"text-anchor":"middle","class":"sp-cap",
+        "font-size":"17","font-weight":"600","letter-spacing":"2",fill:css(pk,'sub'),opacity:".85"});
+      numt.textContent=("0"+s.num); g.appendChild(numt);
+      // name (wrap to 2 lines if it has a space and is long)
+      const words=name.split(" ");
+      let lines=[name];
+      if(name.length>9 && words.length>1){
+        if(words.length===2){ lines=[words[0],words[1]]; }
+        else { lines=[words.slice(0,Math.ceil(words.length/2)).join(" "),words.slice(Math.ceil(words.length/2)).join(" ")]; }
+      }
+      const nameY=boxTop+76;
+      lines.forEach((ln,li)=>{
+        const t=mk("text",{x:cxArr[i],y:nameY+li*22,"text-anchor":"middle","class":"sp-cap",
+          "font-size":"19","font-weight":"700",fill:"#FFFFFF"});
+        t.textContent=ln; g.appendChild(t);
+      });
+      nd.appendChild(g);
+
+      // connector chevron between adjacent boxes (skip across phase loop region naturally drawn anyway)
+      if(i<N-1){
+        const chx=cxArr[i]+boxW/2+gap/2;
+        rb.appendChild(mk("path",{d:"M "+(chx-3)+" "+(rowY-6)+" L "+(chx+4)+" "+rowY+" L "+(chx-3)+" "+(rowY+6),
+          fill:"none",stroke:"#5A5A62","stroke-width":"2.2","stroke-linecap":"round","stroke-linejoin":"round"}));
+      }
     });
   }
 
@@ -191,21 +215,21 @@ footer{ text-align:center; margin-top:44px; font-size:12px; color:#C3A9CC; font-
   function showPhase(key){
     active=key; const p=data[key];
     const d=document.getElementById("sp-detail");
-    d.style.background='#FFFFFF'; d.style.borderColor=css(key,'stroke');
+    d.style.background='var(--surface)'; d.style.borderColor=css(key,'stroke');
     const rows=p.steps.map(s=>{ const st=steps[s];
-      return '<div class="sp-steprow"><span class="sp-stepn" style="background:'+css(key,'stroke')+'">'+st.num+'</span><span class="sp-steptxt" style="color:#1A1A1A"><span style="font-weight:700;color:'+css(key,'text')+'">'+s+'.</span> <span style="color:#1A1A1A">'+st.body+'</span></span></div>';
+      return '<div class="sp-steprow"><span class="sp-stepn" style="background:'+css(key,'stroke')+'">'+st.num+'</span><span class="sp-steptxt" style="color:#FFFFFF"><span style="font-weight:700;color:'+css(key,'text')+'">'+s+'.</span> <span style="color:#FFFFFF">'+st.body+'</span></span></div>';
     }).join('');
     d.innerHTML='<div class="sp-dhead"><span class="sp-dtag" style="background:'+css(key,'chip')+';color:'+css(key,'text')+'">Phase '+p.letter+'</span><span class="sp-dtitle" style="color:'+css(key,'text')+'">'+p.title+'</span></div>'+
-      '<div class="sp-dbody" style="color:#1A1A1A;margin-bottom:14px">'+p.desc+'</div>'+
+      '<div class="sp-dbody" style="color:#FFFFFF;margin-bottom:14px">'+p.desc+'</div>'+
       '<div class="sp-steplist">'+rows+'</div>';
     render(); renderLegend();
   }
   function showStep(name){
     const s=steps[name]; active=s.phase; const p=data[s.phase]; const key=s.phase;
     const d=document.getElementById("sp-detail");
-    d.style.background='#FFFFFF'; d.style.borderColor=css(key,'stroke');
+    d.style.background='var(--surface)'; d.style.borderColor=css(key,'stroke');
     d.innerHTML='<div class="sp-dhead"><span class="sp-dtag" style="background:'+css(key,'chip')+';color:'+css(key,'text')+'">Phase '+p.letter+' \u00B7 Step '+s.num+'</span><span class="sp-dtitle" style="color:'+css(key,'text')+'">'+name+'</span></div>'+
-      '<div class="sp-dbody" style="color:#1A1A1A">'+s.body+'</div>';
+      '<div class="sp-dbody" style="color:#FFFFFF">'+s.body+'</div>';
     render(); renderLegend();
   }
 
